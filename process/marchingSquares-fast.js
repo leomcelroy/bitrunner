@@ -154,11 +154,13 @@ export function marchingSquares(f32Array, isoValue) {
 
   const allLines = [];
   const seen = new Uint8Array(width * height);
+  // const seenSet = new Set();
 
   for (let y = 1; y < height; y++) {
     for (let x = 1; x < width; x++) {
       const index = y * width + x;
       if (seen[index]) continue;
+      // if (seenSet.has(index)) continue;
 
       const neighbors = getNeighbors(y, x);
       const code = getCode(neighbors);
@@ -166,6 +168,7 @@ export function marchingSquares(f32Array, isoValue) {
       let direction = DIRECTION[code];
       const lines = rule([x, y], neighbors);
       seen[index] = 1;
+      // seenSet.add(index);
 
       if (lines.length > 0) {
         allLines.push(...lines);
@@ -182,12 +185,14 @@ export function marchingSquares(f32Array, isoValue) {
 
           const newIndex = y * width + x;
           if (seen[newIndex]) break;
+          // if (seenSet.has(newIndex)) break;
 
           const newNeighbors = getNeighbors(y, x);
           const newCode = getCode(newNeighbors);
           const newRule = RULES_INTERPOLATED[newCode];
           direction = DIRECTION[newCode];
           seen[newIndex] = 1;
+          // seenSet.add(newIndex);
 
           const newLines = newRule([x, y], newNeighbors);
           const lastPolyLine = allLines[allLines.length - 1];

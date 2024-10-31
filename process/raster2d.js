@@ -27,6 +27,7 @@ export function raster2d({
   sortDistance = true,
   speed = 4, // mm/sec
 } = {}) {
+  console.time("raster");
   const conventional = direction === "conventional";
 
   const [ox, oy, oz] = origin;
@@ -43,7 +44,6 @@ export function raster2d({
     const currentOffsetDistance =
       (diameter * stepover * i + diameter / 2) / pxToMM;
 
-    // console.time("marching squares");
     const msLines = ms(distanceField, currentOffsetDistance);
 
     // const ensuredClockwise = ensureClockwiseLoops(msLines);
@@ -61,8 +61,8 @@ export function raster2d({
 
       return conventional ? line : line.reverse();
     });
+
     marchedLines.push(...simplified);
-    // console.timeEnd("marching squares");
 
     // old
     // const offsetted = offset(distanceField, currentOffsetDistance);
@@ -107,6 +107,8 @@ export function raster2d({
     cutDepth: cutDepth / pxToMM,
     maxDepth: maxDepth / pxToMM,
   });
+
+  console.timeEnd("raster");
 
   return {
     marchedLines,
