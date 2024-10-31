@@ -9,6 +9,7 @@ import { mergePath } from "./mergePath.js";
 import { addDepth } from "./addDepth.js";
 import { marchingSquares } from "./marchingSquares.js";
 import { marchingSquares as ms } from "./marchingSquares-fast.js";
+import { marchingSquares as ms2 } from "./marchingSquares-faster.js";
 import { simplify } from "./simplify.js";
 
 export function raster2d({
@@ -44,8 +45,13 @@ export function raster2d({
     const currentOffsetDistance =
       (diameter * stepover * i + diameter / 2) / pxToMM;
 
+    // console.time("ms1");
     const msLines = ms(distanceField, currentOffsetDistance);
+    // console.timeEnd("ms1");
 
+    // console.time("ms2");
+    // ms2(distanceField, currentOffsetDistance);
+    // console.timeEnd("ms2");
     // const ensuredClockwise = ensureClockwiseLoops(msLines);
 
     const simplified = msLines.map((line) => {
