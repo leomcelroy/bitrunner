@@ -154,13 +154,11 @@ export function marchingSquares(f32Array, isoValue) {
 
   const allLines = [];
   const seen = new Uint8Array(width * height);
-  // const seenSet = new Set();
 
   for (let y = 1; y < height; y++) {
     for (let x = 1; x < width; x++) {
       const index = y * width + x;
       if (seen[index]) continue;
-      // if (seenSet.has(index)) continue;
 
       const neighbors = getNeighbors(y, x);
       const code = getCode(neighbors);
@@ -168,7 +166,6 @@ export function marchingSquares(f32Array, isoValue) {
       let direction = DIRECTION[code];
       const lines = rule([x, y], neighbors);
       seen[index] = 1;
-      // seenSet.add(index);
 
       if (lines.length > 0) {
         allLines.push(...lines);
@@ -178,27 +175,37 @@ export function marchingSquares(f32Array, isoValue) {
         const startX = x;
         const startY = y;
         while (direction) {
-          if (direction === "up") y--;
-          else if (direction === "down") y++;
-          else if (direction === "right") x++;
-          else if (direction === "left") x--;
+          let nextX = x;
+          let nextY = y;
 
-          const newIndex = y * width + x;
+          // Update x and y based on direction
+          if (direction === "up") nextY--;
+          else if (direction === "down") nextY++;
+          else if (direction === "right") nextX++;
+          else if (direction === "left") nextX--;
+
+          // Check bounds before proceeding
+          if (nextX < 1 || nextX >= width || nextY < 1 || nextY >= height)
+            break;
+
+          const newIndex = nextY * width + nextX;
           if (seen[newIndex]) break;
-          // if (seenSet.has(newIndex)) break;
 
-          const newNeighbors = getNeighbors(y, x);
+          const newNeighbors = getNeighbors(nextY, nextX);
           const newCode = getCode(newNeighbors);
           const newRule = RULES_INTERPOLATED[newCode];
           direction = DIRECTION[newCode];
           seen[newIndex] = 1;
-          // seenSet.add(newIndex);
 
-          const newLines = newRule([x, y], newNeighbors);
+          const newLines = newRule([nextX, nextY], newNeighbors);
           const lastPolyLine = allLines[allLines.length - 1];
           newLines.forEach((line) => {
             lastPolyLine.push(line[1]);
           });
+
+          // Update x and y after bounds are checked
+          x = nextX;
+          y = nextY;
         }
         x = startX;
         y = startY;
