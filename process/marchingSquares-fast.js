@@ -168,7 +168,7 @@ export function marchingSquares(f32Array, isoValue) {
       seen[index] = 1;
 
       if (lines.length > 0) {
-        allLines.push(lines.flat());
+        allLines.push(...lines);
       }
 
       if (direction) {
@@ -201,5 +201,7 @@ export function marchingSquares(f32Array, isoValue) {
     }
   }
 
-  return mergePolylines(allLines);
+  const merged = mergePolylines(allLines);
+
+  return merged;
 }

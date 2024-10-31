@@ -9,7 +9,6 @@ import { mergePath } from "./mergePath.js";
 import { addDepth } from "./addDepth.js";
 import { marchingSquares } from "./marchingSquares.js";
 import { marchingSquares as ms } from "./marchingSquares-fast.js";
-import { marchingSquares as mc } from "./marchingSquares-contours.js";
 import { simplify } from "./simplify.js";
 
 export function raster2d({
@@ -38,13 +37,13 @@ export function raster2d({
 
   const distanceField = distanceTransform(thresholded);
 
-  const vectors = [];
+  // const vectors = [];
   const marchedLines = [];
   for (let i = 0; i < offsetNumber; i++) {
     const currentOffsetDistance =
       (diameter * stepover * i + diameter / 2) / pxToMM;
 
-    console.time("marching squares");
+    // console.time("marching squares");
     const msLines = ms(distanceField, currentOffsetDistance);
 
     // const ensuredClockwise = ensureClockwiseLoops(msLines);
@@ -63,31 +62,29 @@ export function raster2d({
       return conventional ? line : line.reverse();
     });
     marchedLines.push(...simplified);
-    console.timeEnd("marching squares");
+    // console.timeEnd("marching squares");
 
     // old
-    console.time("neil");
-    const offsetted = offset(distanceField, currentOffsetDistance);
+    // const offsetted = offset(distanceField, currentOffsetDistance);
 
-    const edges = edgeDetect(offsetted);
+    // const edges = edgeDetect(offsetted);
 
-    const orientedEdges = orientEdges(edges);
+    // const orientedEdges = orientEdges(edges);
 
-    const newVectors = vectorize({
-      img: orientedEdges,
-      vectorFit: 1,
-      sort: true,
-    });
+    // const newVectors = vectorize({
+    //   img: orientedEdges,
+    //   vectorFit: 1,
+    //   sort: true,
+    // });
 
-    newVectors.forEach((path) => {
-      path.forEach((pt) => {
-        pt[0] += ox / pxToMM;
-        pt[1] += oy / pxToMM;
-      });
-    });
+    // newVectors.forEach((path) => {
+    //   path.forEach((pt) => {
+    //     pt[0] += ox / pxToMM;
+    //     pt[1] += oy / pxToMM;
+    //   });
+    // });
 
-    vectors.push(...newVectors);
-    console.timeEnd("neil");
+    // vectors.push(...newVectors);
     // old
 
     accumulatedPath = accumulatePath({
