@@ -6,10 +6,12 @@ import { threshold } from "./threshold.js";
 import { vectorize } from "./vectorize.js";
 import { accumulatePath } from "./accumulatePath.js";
 import { mergePath } from "./mergePath.js";
+import { sortByBoundingBoxArea } from "./sortByBoundingBoxArea.js";
 import { addDepth } from "./addDepth.js";
 import { marchingSquares } from "./marchingSquares.js";
 import { marchingSquares as ms } from "./marchingSquares-fast.js";
 import { marchingSquares as ms2 } from "./marchingSquares-faster.js";
+import { marchingSquares as ms3 } from "./marchingSquares-noInterpolate.js";
 import { simplify } from "./simplify.js";
 
 export function raster2d({
@@ -107,6 +109,8 @@ export function raster2d({
       mergeDistance: diameter / pxToMM,
     });
   }
+
+  accumulatedPath = sortByBoundingBoxArea(accumulatedPath);
 
   const finalPath = addDepth({
     path: accumulatedPath,

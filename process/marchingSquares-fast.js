@@ -178,13 +178,11 @@ export function marchingSquares(f32Array, isoValue) {
           let nextX = x;
           let nextY = y;
 
-          // Update x and y based on direction
           if (direction === "up") nextY--;
           else if (direction === "down") nextY++;
           else if (direction === "right") nextX++;
           else if (direction === "left") nextX--;
 
-          // Check bounds before proceeding
           if (nextX < 1 || nextX >= width || nextY < 1 || nextY >= height)
             break;
 
@@ -203,7 +201,6 @@ export function marchingSquares(f32Array, isoValue) {
             lastPolyLine.push(line[1]);
           });
 
-          // Update x and y after bounds are checked
           x = nextX;
           y = nextY;
         }
