@@ -32,7 +32,9 @@ export function view(state) {
       </div>
 
       <!-- Right Panel with Scroll -->
-      <div class="w-[300px] bg-slate-300 p-3 overflow-y-auto">
+      <div
+        class="w-[300px] border-l border-gray-400 bg-slate-300 p-3 overflow-y-auto"
+      >
         ${renderToolControls(state)}
       </div>
     </div>
@@ -68,7 +70,7 @@ function renderLeftPanel(state) {
   return html`
     <!-- Left Panel with Scroll -->
     <div
-      class="w-[300px] bg-white border border-gray-300 rounded-lg p-3 overflow-y-auto flex flex-col gap-2"
+      class="w-[300px] bg-white border-r border-gray-400 p-3 overflow-y-auto flex flex-col gap-2"
     >
       ${renderImagePreview(state)}
 
